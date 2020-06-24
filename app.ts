@@ -5,9 +5,13 @@ import * as path from "path";
 
 const zbc = new ZBClient();
 
-// zbc.createWorker("nothing", (_, complete) => {
-//   //   console.log(_);
-//   complete.success();
+// zbc.createWorker({
+//   taskType: "nothing",
+//   taskHandler: (_, complete) => {
+//     console.log(_);
+//     complete.success();
+//   },
+//   maxJobsToActivate: 12800,
 // });
 
 async function main() {
