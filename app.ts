@@ -15,12 +15,13 @@ async function main() {
   let started = 0;
   let time = 0;
   let last = 0;
+  console.log(`Time : \t Total \t | wf/s\t | average/s`);
   setInterval(() => {
     time += 5;
     console.log(
-      `${time}s : ${started} | ${started - last} | ${Math.round(
-        started / time
-      )}/sec`
+      `${time}s : \t ${started} \t | ${Math.round(
+        (started - last) / 5
+      )} \t | ${Math.round(started / time)}/sec`
     );
     last = started;
   }, 5000);
