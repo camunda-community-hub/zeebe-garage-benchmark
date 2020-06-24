@@ -1,6 +1,6 @@
 # Zeebe TPS Test
 
-Uses the Zeebe Node client to do a ghetto TPS test.
+Uses the Zeebe Node client to do a ghetto TPS test. See [this post in the Zeebe forum](https://forum.zeebe.io/t/whats-the-broker-ratelimit-strategy/1370/2) for an example of the output.
 
 This is only useful to test the relative performance of releases - that is: you run this test on the same hardware with different releases to see how they differ.
 
