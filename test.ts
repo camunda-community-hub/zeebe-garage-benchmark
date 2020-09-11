@@ -61,11 +61,12 @@ async function runTests() {
     console.log(`Average TPS: ${runningAverage}.`);
     results.push({
       version: test.version,
-      average: runningAverage,
+      partitions: partitionCount,
+      averageTPS: runningAverage,
     });
   }
 
-  console.log(results);
+  console.log("Results", results);
 
   stopWorker();
 }
