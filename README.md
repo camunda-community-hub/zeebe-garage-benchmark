@@ -4,9 +4,69 @@ Uses the Zeebe Node client to do a ghetto TPS test. See [this post in the Zeebe 
 
 This is only useful to test the relative performance of releases - that is: you run this test on the same hardware with different releases to see how they differ.
 
-This starts workflows as fast as possible. The BPMN model has a single service task, and the test does not service the task or complete the workflow.
+This starts workflows as fast as possible. The BPMN model has a single service task.
 
-## Install
+The workflows are started by a single thread that sends a `CreateWorkflowInstance` command, and waits for the response from the Broker before sending another command. When testing with two requests in parallel, the performance dropped significantly.
+
+By default, the test does not service the task or complete the workflow.
+
+To run the test with backpressure disabled in the broker, use the `-d` switch.
+
+## Example Output
+
+```
+Version: 0.22.5 | Time: 30s
+Starting Zeebe 0.22.5 with 2 partitions | Backpressure disabled...
+Started Zeebe broker
+Time :   Total   | wf/s  | running average
+5s :     288     | 58    | 58/sec
+10s :    640     | 70    | 64/sec
+15s :    1007    | 73    | 67/sec
+20s :    1385    | 76    | 69/sec
+25s :    1731    | 69    | 69/sec
+Average TPS: 69/sec.
+
+Version: 0.23.5 | Time: 30s
+Starting Zeebe 0.23.5 with 2 partitions | Backpressure disabled...
+Started Zeebe broker
+Time :   Total   | wf/s  | running average
+5s :     76      | 15    | 15/sec
+10s :    146     | 14    | 15/sec
+15s :    216     | 14    | 14/sec
+20s :    289     | 15    | 14/sec
+25s :    359     | 14    | 14/sec
+Average TPS: 14/sec.
+
+Version: 0.24.1 | Time: 30s
+Starting Zeebe 0.24.1 with 2 partitions | Backpressure disabled...
+Started Zeebe broker
+Time :   Total   | wf/s  | running average
+5s :     55      | 11    | 11/sec
+10s :    144     | 18    | 14/sec
+15s :    255     | 22    | 17/sec
+20s :    381     | 25    | 19/sec
+25s :    530     | 30    | 21/sec
+Average TPS: 21/sec.
+
+Version: 0.25.0-alpha2 | Time: 30s
+Starting Zeebe 0.25.0-alpha2 with 2 partitions | Backpressure disabled...
+Started Zeebe broker
+Time :   Total   | wf/s  | running average
+5s :     145     | 29    | 29/sec
+10s :    311     | 33    | 31/sec
+15s :    484     | 35    | 32/sec
+20s :    658     | 35    | 33/sec
+25s :    837     | 36    | 33/sec
+Average TPS: 33/sec.
+```
+
+## Prerequisites
+
+* Docker
+* Node.js
+* NPM 
+
+## Install Dependencies
 
 ```bash
 npm i -g ts-node typescript
@@ -15,16 +75,31 @@ npm i
 
 ## Run
 
-* Start a Zeebe broker on localhost.
-* `ts-node app.ts`
+For example, to test the 0.22, 0.23, 0.24, and 0.25 alpha brokers with a 45 second test run: 
 
-## Disabling Backpressure
-
-On 0.23.2 and later, you can disable backpressure by adding this to `config/application.yml`:
-
-```yaml
-backpressure:
-  enabled: false
+```bash
+ts-node test.ts -z 0.22.5,0.23.5,0.24.1,0.25.0-alpha2 -t 45
 ```
 
-See [this commit](https://github.com/zeebe-io/zeebe/pull/4610/files#diff-42a9463a276119a1605b888ddc669524R244) for more details.
+To do the same test with backpressure disabled: 
+
+```bash
+ts-node test.ts -z 0.22.5,0.23.5,0.24.1,0.25.0-alpha2 -t 45 -d
+```
+
+To do the same test with 
+
+## Notes
+
+I recommend that you run the tests for some time, as the broker performance can change over time.
+
+Obviously, the resources available to Docker, and the hardware that you are running on will impact the performance.
+
+## TODO
+
+* Enable testing different backpressure algorithms and configurations.
+* Enable csv output for import to spreadsheets.
+* Get a worker optionally running in another thread completing the workflows.
+* Measure end-to-end latency for a workflow.
+* Make it easy to BYO workflow and worker code.
+* Enable running on Kubernetes.

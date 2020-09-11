@@ -8,7 +8,7 @@ const zbc = new ZBClient();
 // zbc.createWorker({
 //   taskType: "nothing",
 //   taskHandler: (_, complete) => {
-//     console.log(_);
+//     // console.log(_);
 //     complete.success();
 //   },
 //   maxJobsToActivate: 12800,
@@ -31,7 +31,7 @@ async function main() {
   }, 5000);
   const start = () => zbc.createWorkflowInstance("noop1", {});
   do {
-    await start();
+    await start().catch(() => console.log("Error 13"));
     started++;
   } while (true == true);
 }
