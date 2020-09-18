@@ -7,6 +7,7 @@ export class Generator {
   zbc: ZBClient;
   partitionCount: number;
   runningAverage?: string;
+  started: number = 0;
   constructor(partitionCount: number) {
     this.running = false;
     this.zbc = new ZBClient({
@@ -22,25 +23,25 @@ export class Generator {
       path.join(".", "bpmn", "noop1.bpmn")
     );
     console.log("Workflow deployed: " + wf.key);
-    let started = 0;
+    this.started = 0;
     let time = 0;
     let last = 0;
     console.log(`Time : \t Total \t | wf/s\t | running average`);
     this.output = setInterval(() => {
       time += 5;
       console.log(
-        `${time}s : \t ${started} \t | ${Math.round(
-          (started - last) / 5
-        )} \t | ${Math.round(started / time)}/sec`
+        `${time}s : \t ${this.started} \t | ${Math.round(
+          (this.started - last) / 5
+        )} \t | ${Math.round(this.started / time)}/sec`
       );
-      last = started;
-      this.runningAverage = `${Math.round(started / time)}/sec`;
+      last = this.started;
+      this.runningAverage = `${Math.round(this.started / time)}/sec`;
     }, 5000);
     const start = () => this.zbc.createWorkflowInstance("noop1", {});
 
     do {
       await start().catch(() => console.log("Error 13"));
-      started++;
+      this.started++;
     } while (this.running == true);
   }
 
@@ -48,5 +49,6 @@ export class Generator {
     this.running = false;
     clearInterval(this.output!);
     await this.zbc.close();
+    return this.started;
   }
 }

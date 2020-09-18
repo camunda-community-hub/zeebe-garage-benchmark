@@ -4,7 +4,6 @@ import {
   StartedTestContainer,
   Wait,
 } from "@sitapati/testcontainers";
-import { startWorker } from "./worker";
 import { Generator } from "./Generator";
 
 export class Test {
@@ -61,6 +60,9 @@ export class Test {
   async stop() {
     await this.generator?.stop();
     await this.container?.stop();
-    return this.generator?.runningAverage;
+    return {
+      runningAverage: this.generator?.runningAverage,
+      started: this.generator?.started,
+    };
   }
 }

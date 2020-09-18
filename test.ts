@@ -32,6 +32,10 @@ async function runTests() {
   const zeebeVersions = program.zeebeVersions.split(",");
   const partitionCount = program.partitionCount || "1";
 
+  for (const id in cluster.workers) {
+    cluster.workers[id]?.on("message", (message) => console.log(message));
+  }
+
   const tests = zeebeVersions.map((version: string) => ({
     version,
     fn: () => {
@@ -48,8 +52,8 @@ async function runTests() {
         }
         await test.start();
         setTimeout(async () => {
-          const runningAverage = await test.stop();
-          resolve(runningAverage);
+          const result = await test.stop();
+          resolve(result);
         }, program.time * 1000);
       });
     },
@@ -57,18 +61,22 @@ async function runTests() {
 
   const results = [];
   for (let test of tests) {
-    const runningAverage = await test.fn();
+    const { runningAverage, started } = await test.fn();
     console.log(`Average TPS: ${runningAverage}.`);
     results.push({
       version: test.version,
       partitions: partitionCount,
+      worker: program.withWorker,
+      workflowsStarted: started,
       averageTPS: runningAverage,
     });
   }
 
   console.log("Results", results);
 
-  stopWorker();
+  for (const id in cluster.workers) {
+    cluster.workers[id]?.send("stop");
+  }
 }
 
 if (cluster.isMaster) {
