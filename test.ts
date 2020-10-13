@@ -58,7 +58,7 @@ async function runTests() {
         setTimeout(async () => {
           const result = await test.stop();
           resolve(result);
-        }, program.time * 1000);
+        }, program.time + 2 * 1000);
       });
     },
   }));
