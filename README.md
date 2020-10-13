@@ -75,7 +75,7 @@ npm i
 
 ## Run
 
-For example, to test the 0.22, 0.23, 0.24, and 0.25 alpha brokers with a 45 second test run: 
+For example, to test the 0.22, 0.23, 0.24, and 0.25 alpha brokers with a 45 second test run with one partition: 
 
 ```bash
 ts-node test.ts -z 0.22.5,0.23.5,0.24.1,0.25.0-alpha2 -t 45
@@ -87,7 +87,17 @@ To do the same test with backpressure disabled:
 ts-node test.ts -z 0.22.5,0.23.5,0.24.1,0.25.0-alpha2 -t 45 -d
 ```
 
-To do the same test with 
+To do the same test with 2 partitions: 
+
+```bash 
+ts-node test.ts -z 0.22.5,0.23.5,0.24.1,0.25.0-alpha2 -t 45 -p 2 -d
+```
+
+To do a test with a worker completing jobs in another thread:
+
+```bash
+ts-node test.ts -z 0.22.5,0.23.5,0.24.1,0.25.0-alpha2 -t 45 -p 2 -d -w
+```
 
 ## Notes
 

@@ -1,7 +1,7 @@
 import { Command } from "commander";
 import { Test } from "./lib/Test";
 import cluster from "cluster";
-import { startWorker, stopWorker } from "./lib/worker";
+import { startWorker } from "./lib/worker";
 
 if (cluster.isMaster) {
   process.on("unhandledRejection", (error) => {
