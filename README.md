@@ -114,6 +114,7 @@ Obviously, the resources available to Docker, and the hardware that you are runn
 ## TODO
 
 * Enable testing different backpressure algorithms and configurations.
+    - Test spec file to configure test parameters, incl. backpressure
 * Enable csv output for import to spreadsheets.
 * Measure end-to-end latency for a workflow.
 * Make it easy to BYO workflow and worker code.
