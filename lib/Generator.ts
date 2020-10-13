@@ -19,6 +19,8 @@ export class Generator {
   async start() {
     this.running = true;
 
+    await new Promise((res) => setTimeout(() => res(), 2000));
+
     const wf = await this.zbc.deployWorkflow(
       path.join(".", "bpmn", "noop1.bpmn")
     );
