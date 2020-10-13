@@ -119,6 +119,3 @@ Obviously, the resources available to Docker, and the hardware that you are runn
 * Make it easy to BYO workflow and worker code.
 * Enable running on Kubernetes.
 * Enable payload size in KB for workload start.
-* Enable CPU and IO Thread count for Zeebe.
-* ZEEBE_BROKER_THREADS_CPUTHREADCOUNT (default 2)
-* ZEEBE_BROKER_THREADS_IOTHREADCOUNT (default 2)
