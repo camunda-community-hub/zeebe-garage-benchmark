@@ -21,7 +21,9 @@ async function runTests() {
     .option("-w, --withWorker", "Run job worker")
     .option("-d, --disableBackpressure", "Disable Backpressure")
     .option("-t, --time <time>", "Duration of test run")
-    .option("-p, --partitionCount <partitions>", "Partition Count (default 1)");
+    .option("-p, --partitionCount <partitions>", "Partition Count (default 1)")
+    .option("-c --cpuThreads <cpuThreadCount>", "CPU Threads (default 2)")
+    .option("-i --ioThreads <ioThreadCount>", "IO Threads (default 2)");
 
   program.parse();
 
@@ -45,6 +47,8 @@ async function runTests() {
           zeebeVersion: version,
           withWorker: program.withWorker,
           disableBackpressure: program.disableBackpressure,
+          cpuThreads: program.cpuThreads,
+          ioThreads: program.ioThreads,
           partitionCount,
         });
         if (!test) {

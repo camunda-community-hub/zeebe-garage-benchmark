@@ -22,11 +22,13 @@ export class Generator {
     const wf = await this.zbc.deployWorkflow(
       path.join(".", "bpmn", "noop1.bpmn")
     );
+
     console.log("Workflow deployed: " + wf.key);
     this.started = 0;
     let time = 0;
     let last = 0;
     console.log(`Time : \t Total \t | wf/s\t | running average`);
+
     this.output = setInterval(() => {
       time += 5;
       console.log(
@@ -37,11 +39,12 @@ export class Generator {
       last = this.started;
       this.runningAverage = `${Math.round(this.started / time)}/sec`;
     }, 5000);
-    const start = () => this.zbc.createWorkflowInstance("noop1", {});
 
     do {
-      await start().catch(() => console.log("Error 13"));
-      this.started++;
+      await this.zbc
+        .createWorkflowInstance("noop1", {})
+        .then(() => this.started++)
+        .catch(() => console.log("Error 13"));
     } while (this.running == true);
   }
 

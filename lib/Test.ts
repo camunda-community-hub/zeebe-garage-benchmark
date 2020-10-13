@@ -13,21 +13,29 @@ export class Test {
   generator?: Generator;
   disableBackpressure: boolean;
   partitionCount: string;
+  cpuThreads: string;
+  ioThreads: string;
   constructor({
     zeebeVersion,
     withWorker,
     disableBackpressure,
     partitionCount,
+    cpuThreads,
+    ioThreads,
   }: {
     zeebeVersion: string;
     withWorker: boolean;
     disableBackpressure: boolean;
     partitionCount: string;
+    cpuThreads: string;
+    ioThreads: string;
   }) {
     this.zeebeVersion = zeebeVersion;
     this.withWorker = withWorker;
     this.disableBackpressure = disableBackpressure;
     this.partitionCount = partitionCount;
+    this.cpuThreads = cpuThreads || "2";
+    this.ioThreads = ioThreads || "2";
   }
 
   async start() {
@@ -39,7 +47,9 @@ export class Test {
     )
       .withExposedPorts(26500)
       .withWaitStrategy(Wait.forLogMessage("Bootstrap Broker-0 succeeded."))
-      .withEnv("ZEEBE_BROKER_CLUSTER_PARTITIONSCOUNT", this.partitionCount);
+      .withEnv("ZEEBE_BROKER_CLUSTER_PARTITIONSCOUNT", this.partitionCount)
+      .withEnv("ZEEBE_BROKER_THREADS_CPUTHREADCOUNT", this.cpuThreads)
+      .withEnv("ZEEBE_BROKER_THREADS_IOTHREADCOUNT", this.ioThreads);
 
     container = this.disableBackpressure
       ? container.withEnv("ZEEBE_BROKER_BACKPRESSURE_ENABLED", "false")

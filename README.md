@@ -99,6 +99,12 @@ To do a test with a worker completing jobs in another thread:
 ts-node test.ts -z 0.22.5,0.23.5,0.24.1,0.25.0-alpha2 -t 45 -p 2 -d -w
 ```
 
+To specify four CPU and threads IO Threads for the Zeebe broker (default is 2 for each):
+
+```bash
+ts-node test.ts -z 0.22.5,0.23.5,0.24.1,0.25.0-alpha2 -t 45 -p 2 -d -w -c 4 -i 3
+```
+
 ## Notes
 
 I recommend that you run the tests for some time, as the broker performance can change over time.
@@ -109,7 +115,10 @@ Obviously, the resources available to Docker, and the hardware that you are runn
 
 * Enable testing different backpressure algorithms and configurations.
 * Enable csv output for import to spreadsheets.
-* Get a worker optionally running in another thread completing the workflows.
 * Measure end-to-end latency for a workflow.
 * Make it easy to BYO workflow and worker code.
 * Enable running on Kubernetes.
+* Enable payload size in KB for workload start.
+* Enable CPU and IO Thread count for Zeebe.
+* ZEEBE_BROKER_THREADS_CPUTHREADCOUNT (default 2)
+* ZEEBE_BROKER_THREADS_IOTHREADCOUNT (default 2)
