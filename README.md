@@ -118,5 +118,6 @@ Obviously, the resources available to Docker, and the hardware that you are runn
 * Enable csv output for import to spreadsheets.
 * Measure end-to-end latency for a workflow.
 * Make it easy to BYO workflow and worker code.
-* Enable running on Kubernetes.
 * Enable payload size in KB for workload start.
+* Enable running on Kubernetes.
+
