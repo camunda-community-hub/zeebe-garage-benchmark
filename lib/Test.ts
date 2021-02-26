@@ -7,7 +7,7 @@ import {
 import { Generator } from "./Generator";
 
 export class Test {
-  zeebeVersion: string;
+  zeebeVersionTag: string;
   withWorker: boolean;
   container?: StartedTestContainer;
   generator?: Generator;
@@ -30,7 +30,7 @@ export class Test {
     cpuThreads: string;
     ioThreads: string;
   }) {
-    this.zeebeVersion = zeebeVersion;
+    this.zeebeVersionTag = zeebeVersion;
     this.withWorker = withWorker;
     this.disableBackpressure = disableBackpressure;
     this.partitionCount = partitionCount;
@@ -41,8 +41,8 @@ export class Test {
   async start() {
     let container = new GenericContainer(
       "camunda/zeebe",
-      this.zeebeVersion,
-      undefined,
+      this.zeebeVersionTag,
+      undefined, // DockerClientFactory
       26500
     )
       .withExposedPorts(26500)
@@ -58,13 +58,13 @@ export class Test {
       ? "Backpressure disabled"
       : "";
     console.log(
-      `Starting Zeebe ${this.zeebeVersion} with ${this.partitionCount} partitions | ${backpressureMessage}...`
+      `Starting Zeebe ${this.zeebeVersionTag} with ${this.partitionCount} partitions | ${backpressureMessage}...`
     );
     this.container = await container.start();
     console.log(`Started Zeebe broker`);
 
     this.generator = new Generator(+this.partitionCount);
-    this.generator.start();
+    await this.generator.start();
   }
 
   async stop() {

@@ -52,13 +52,13 @@ async function runTests() {
           partitionCount,
         });
         if (!test) {
-          return resolve();
+          return resolve(null);
         }
         await test.start();
         setTimeout(async () => {
           const result = await test.stop();
           resolve(result);
-        }, +program.time + 2 * 1000);
+        }, (+program.time + 2) * 1000);
       });
     },
   }));

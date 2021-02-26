@@ -12,6 +12,7 @@ export class Generator {
     this.running = false;
     this.zbc = new ZBClient({
       loglevel: "DEBUG",
+      maxRetries: 1,
     });
     this.partitionCount = partitionCount;
   }
@@ -19,8 +20,9 @@ export class Generator {
   async start() {
     this.running = true;
 
-    await new Promise((res) => setTimeout(() => res(), 2000));
+    await new Promise((res) => setTimeout(() => res(null), 2000));
 
+    console.log("Deploying workflow...");
     const wf = await this.zbc.deployWorkflow(
       path.join(".", "bpmn", "noop1.bpmn")
     );
@@ -42,12 +44,16 @@ export class Generator {
       this.runningAverage = `${Math.round(this.started / time)}/sec`;
     }, 5000);
 
-    do {
-      await this.zbc
-        .createWorkflowInstance("noop1", {})
-        .then(() => this.started++)
-        .catch(() => console.log("Error 13"));
-    } while (this.running == true);
+    new Promise(async (res) => {
+      do {
+        await this.zbc
+          .createWorkflowInstance("noop1", {})
+          .then(() => this.started++)
+          .catch(() => console.log("Error 13"));
+      } while (this.running == true);
+      res(null);
+    });
+    return true;
   }
 
   async stop() {
