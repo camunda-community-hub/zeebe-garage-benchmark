@@ -2,6 +2,7 @@ import { Command } from "commander";
 import { Test } from "./lib/Test";
 import cluster from "cluster";
 import { startWorker } from "./lib/worker";
+import fs from "fs";
 
 if (cluster.isMaster) {
   process.on("unhandledRejection", (error) => {
@@ -76,7 +77,11 @@ async function runTests() {
     });
   }
 
-  console.log("Results", results);
+  console.log("Results", { duration: program.time, results });
+  fs.writeFileSync(
+    `./results-${new Date()}.json`,
+    JSON.stringify({ duration: program.time, results }, null, 2)
+  );
 
   for (const id in cluster.workers) {
     cluster.workers[id]?.send("stop");
