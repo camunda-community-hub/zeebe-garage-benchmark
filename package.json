@@ -12,7 +12,7 @@
   "dependencies": {
     "@sitapati/testcontainers": "^2.8.1",
     "@types/node": "^14.10.0",
-    "commander": "^6.1.0",
+    "commander": "^11.0.0",
     "zeebe-node": "^0.26.0"
   }
 }

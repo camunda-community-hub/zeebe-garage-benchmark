@@ -1,7 +1,7 @@
 dependencies:
   '@sitapati/testcontainers': 2.8.1
   '@types/node': 14.10.0
-  commander: 6.1.0
+  commander: 11.1.0
   zeebe-node: 0.26.0
 lockfileVersion: 5.2
 packages:
@@ -364,12 +364,12 @@ packages:
       node: '>=0.8'
     resolution:
       integrity: sha1-nLFpkX7F0SwHNtPoaFdG3xyt93g=
-  /commander/6.1.0:
+  /commander/11.1.0:
     dev: false
     engines:
-      node: '>= 6'
+      node: '>=16'
     resolution:
-      integrity: sha512-wl7PNrYWd2y5mp1OK/LhTlv8Ff4kQJQRXXAvF+uU/TPNiVJUxZLRYGj/B0y/lPGAVcSbJqH2Za/cvHmrPMC8mA==
+      integrity: sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==
   /concat-map/0.0.1:
     dev: false
     resolution:
@@ -1854,5 +1854,5 @@ packages:
 specifiers:
   '@sitapati/testcontainers': ^2.8.1
   '@types/node': ^14.10.0
-  commander: ^6.1.0
+  commander: ^11.0.0
   zeebe-node: ^0.26.0
